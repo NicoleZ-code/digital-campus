@@ -1,0 +1,131 @@
+header {
+  height: 88px;
+  display: flex;
+  align-items: center;
+  gap: 27px;
+  padding: 0 34px;
+  border-bottom: 1px solid var(--line);
+  background: #081e27;
+  position: relative;
+  z-index: 5;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+}
+.brand > svg {
+  color: var(--mint);
+}
+.brand > span {
+  font-size: 22px;
+  letter-spacing: 4px;
+  font-weight: 600;
+}
+.brand small {
+  display: block;
+  font-size: 8px;
+  letter-spacing: 2.9px;
+  margin-top: 4px;
+  color: #8cafb6;
+}
+.header-divider {
+  height: 28px;
+  border-left: 1px solid var(--line);
+}
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  font-size: 11px;
+}
+.breadcrumb > svg {
+  color: #45616b;
+}
+.breadcrumb button {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.breadcrumb button:first-child {
+  color: #8caab2;
+}
+.header-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+.live {
+  font-size: 10px;
+  color: #91b5bb;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.live i,
+.data-status i,
+footer i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--mint);
+  box-shadow: 0 0 9px #6bfad36b;
+}
+.date {
+  font-size: 9px;
+  color: #86a1aa;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+.date b {
+  font-size: 16px;
+  color: #c9dddf;
+  letter-spacing: 1px;
+  font-weight: 500;
+}
+.icon-button {
+  display: flex;
+  padding: 7px;
+  color: #8db0b8;
+}
+main {
+  height: calc(100dvh - 127px);
+  min-height: 690px;
+  position: relative;
+  overflow: hidden;
+}
+.scene {
+  position: absolute;
+  inset: 0;
+}
+.scene:after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 25%, #061b2433 65%, #061b24aa 100%);
+}
+.left,
+.right {
+  position: absolute;
+  top: 38px;
+  bottom: 105px;
+  width: 260px;
+  z-index: 2;
+  pointer-events: none;
+}
+.left > *,
+.right > * {
+  pointer-events: auto;
+}
+.left {
+  left: 34px;
+}
+.right {
+  right: 34px;
+  top: 40px;
+  width: 270px;
+}

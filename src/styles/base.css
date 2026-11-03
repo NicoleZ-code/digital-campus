@@ -1,0 +1,67 @@
+:root {
+  font-family: Manrope, 'Noto Sans SC', sans-serif;
+  color: #dceceb;
+  background: #061b24;
+  font-synthesis: none;
+  font-weight: 400;
+  font-size: 13px;
+  --mint: #78edcf;
+  --muted: #6c919b;
+  --line: rgba(137, 193, 198, 0.13);
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  border: 0;
+  background: none;
+  transition:
+    background 0.2s,
+    border-color 0.2s,
+    color 0.2s;
+}
+button:focus-visible {
+  outline: 2px solid var(--mint);
+  outline-offset: 4px;
+}
+button:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+button:hover:not(:disabled) {
+  color: var(--mint);
+}
+button svg {
+  flex-shrink: 0;
+}
+button.primary:hover {
+  background: #a6ffe4;
+  color: #123e38;
+}
+small {
+  font-size: 10px;
+}
+button,
+p,
+h1,
+h2,
+h3 {
+  margin: 0;
+}
+button {
+  padding: 0;
+}
+h2 {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.7px;
+}
+i {
+  display: inline-block;
+}
