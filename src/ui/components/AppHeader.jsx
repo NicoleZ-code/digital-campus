@@ -1,7 +1,21 @@
+/**
+ * @file AppHeader.jsx
+ * @description 页面顶部导航栏，包含品牌入口、层级面包屑、实时时钟与全局操作。
+ */
+
 import React from 'react';
-import { Boxes, ChevronRight, Map, Maximize, CodeXml } from 'lucide-react';
+import { Boxes, ChevronRight, Map, Maximize, CodeXml, Database } from 'lucide-react';
 import useClock from '../hooks/useClock.js';
 
+/**
+ * 页面顶部导航栏组件
+ * @param {number} level - 当前空间层级索引 0-4（0 城市 / 1 园区 / 2 楼宇 / 3 楼层 / 4 房间）
+ * @param {object} building - 当前选中楼宇对象（含 name 等字段），level >= 2 时展示
+ * @param {number} floor - 当前选中楼层号，level >= 3 时展示
+ * @param {(level: number) => void} onNavigate - 层级跳转回调，参数为目标层级索引（用于面包屑点击）
+ * @param {() => void} onReset - 重置回初始层级的回调（点击品牌按钮触发）
+ * @param {(msg: string) => void} onNotice - 全局提示回调，用于上报全屏切换失败等消息
+ */
 export default function AppHeader({
   level,
   building,
@@ -26,6 +40,7 @@ export default function AppHeader({
         </span>
       </button>
       <div className="header-divider" />
+      {/* 面包屑：按当前层级逐级显示可回跳的入口 */}
       <nav className="breadcrumb">
         <button onClick={() => go(0)}>
           <Map size={14} />
@@ -47,17 +62,27 @@ export default function AppHeader({
         )}
       </nav>
       <div className="header-right">
-        {level === 1 && (
+        {/* 文档入口固定显示，确保下钻到任意层级后仍可访问分析文档。 */}
+        <div className="documentation-links">
           <a
             className="analysis-link"
-            href={`${import.meta.env.BASE_URL}sdoc/下钻与楼层展开技术分析.html`}
+            href={`${import.meta.env.BASE_URL}sdoc/index.html#analysis`}
             target="_blank"
             rel="noopener noreferrer"
           >
             <CodeXml size={16} />
             分析代码
           </a>
-        )}
+          <a
+            className="analysis-link"
+            href={`${import.meta.env.BASE_URL}sdoc/index.html#data`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Database size={16} />
+            数据结构
+          </a>
+        </div>
         <span className="live">
           <i />
           模拟数据

@@ -1,3 +1,8 @@
+/**
+ * @file Car.jsx
+ * @description 园区车辆模型，沿环形道路循环行驶。
+ */
+
 import React, { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { RoundedBox } from '@react-three/drei';
@@ -5,6 +10,10 @@ import { Vector3 } from 'three';
 import Box from '../primitives/Box.jsx';
 import { trafficRoute, trafficProgress } from '../config/traffic.js';
 
+/**
+ * 渲染单辆园区轿车模型（车身、车窗、车灯、后视镜与四轮）。
+ * @param {string} [color='#d9e6e7'] - 车身颜色（十六进制色值）
+ */
 export function Vehicle({ color = '#d9e6e7' }) {
   return (
     <group name="detailed-sedan">
@@ -108,9 +117,16 @@ export function Vehicle({ color = '#d9e6e7' }) {
     </group>
   );
 }
+/**
+ * 沿环形道路循环行驶的车辆：内部包装 Vehicle 并逐帧更新位置与朝向。
+ * @param {number} [offset=0] - 行车进度偏移（0~1），用于多辆车错开位置
+ * @param {string} [color] - 车身颜色，缺省使用 Vehicle 默认色
+ */
 export default function Car({ offset = 0, color }) {
   const ref = useRef();
+  // 复用同一 Vector3，避免每帧创建对象
   const tangent = useRef(new Vector3());
+  // 每帧根据时间计算行车进度，沿环形路线取点位并按切线朝向车身
   useFrame(({ clock }) => {
     const progress = trafficProgress(clock.elapsedTime, offset);
     ref.current.position.copy(trafficRoute.getPointAt(progress));

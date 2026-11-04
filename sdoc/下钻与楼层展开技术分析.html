@@ -6,6 +6,20 @@
       name="viewport"
       content="width=device-width, initial-scale=1"
     />
+    <meta
+      name="description"
+      content="海序空间技术图解：解析五级下钻、楼层展开、数据关联与镜头动画，含交互演示和代码主题。"
+    />
+    <meta
+      name="theme-color"
+      content="#f3f6f7"
+    />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      sizes="any"
+      href="data:image/svg+xml,%3Csvg%0A%20%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%0A%20%20viewBox%3D%220%200%2032%2032%22%0A%20%20fill%3D%22none%22%0A%3E%0A%20%20%3C%21--%20Logo%20geometry%3A%20Lucide%20Boxes%2C%20ISC%20license%3B%20see%20favicon-LICENSE.txt.%20--%3E%0A%20%20%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%23061b24%22%20%2F%3E%0A%20%20%3Cg%0A%20%20%20%20transform%3D%22translate%284%204%29%22%0A%20%20%20%20stroke%3D%22%2378edcf%22%0A%20%20%20%20stroke-width%3D%221.3%22%0A%20%20%20%20stroke-linecap%3D%22round%22%0A%20%20%20%20stroke-linejoin%3D%22round%22%0A%20%20%3E%0A%20%20%20%20%3Cpath%0A%20%20%20%20%20%20d%3D%22M2.97%2012.92A2%202%200%200%200%202%2014.63v3.24a2%202%200%200%200%20.97%201.71l3%201.8a2%202%200%200%200%202.06%200L12%2019v-5.5l-5-3-4.03%202.42Z%22%0A%20%20%20%20%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22m7%2016.5-4.74-2.85%22%20%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22m7%2016.5%205-3%22%20%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M7%2016.5v5.17%22%20%2F%3E%0A%20%20%20%20%3Cpath%0A%20%20%20%20%20%20d%3D%22M12%2013.5V19l3.97%202.38a2%202%200%200%200%202.06%200l3-1.8a2%202%200%200%200%20.97-1.71v-3.24a2%202%200%200%200-.97-1.71L17%2010.5l-5%203Z%22%0A%20%20%20%20%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22m17%2016.5-5-3%22%20%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22m17%2016.5%204.74-2.85%22%20%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M17%2016.5v5.17%22%20%2F%3E%0A%20%20%20%20%3Cpath%0A%20%20%20%20%20%20d%3D%22M7.97%204.42A2%202%200%200%200%207%206.13v4.37l5%203%205-3V6.13a2%202%200%200%200-.97-1.71l-3-1.8a2%202%200%200%200-2.06%200l-3%201.8Z%22%0A%20%20%20%20%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M12%208%207.26%205.15%22%20%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22m12%208%204.74-2.85%22%20%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M12%2013.5V8%22%20%2F%3E%0A%20%20%3C%2Fg%3E%0A%3C%2Fsvg%3E%0A"
+    />
     <title>下钻与楼层展开 · 技术图解</title>
     <style>
       pre {
@@ -4613,9 +4627,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         <article>
           <p>
             本文基于当前
-            <code>code/src/</code>
-            实现，说明从城市到房间的下钻、楼层抽离、内容切换和镜头动画。文中路径均相对于
-            <code>code/</code>；代码片段仅摘录关键逻辑。
+            <code>src/</code>
+            实现，说明从城市到房间的下钻、楼层抽离、内容切换和镜头动画。文中路径均相对于仓库根目录；代码片段仅摘录关键逻辑。
           </p>
           <h2 id="section-1">1. 实现的核心</h2>
           <p>
@@ -4717,10 +4730,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             </table>
           </div>
           <h2 id="section-3">3. 五级下钻状态</h2>
-          <p>
-            <code>level</code> 是业务层级，<code>floor</code>
-            是实际楼层号，两者不能混用。
-          </p>
+          <p><code>level</code> 是业务层级，<code>floor</code> 是实际楼层号，两者不能混用。</p>
           <div class="table-scroll">
             <table>
               <thead>
@@ -4772,10 +4782,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             </div>
             <pre><code><span class="kd">const</span><span class="w"> </span><span class="nx">defaultSelection</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
 <span class="w">  </span><span class="nx">level</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span>
-<span class="w">  </span><span class="nx">buildingId</span><span class="o">:</span><span class="w"> </span><span class="s2">"b-a"</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">buildingId</span><span class="o">:</span><span class="w"> </span><span class="s1">'b-a'</span><span class="p">,</span>
 <span class="w">  </span><span class="nx">floor</span><span class="o">:</span><span class="w"> </span><span class="mf">6</span><span class="p">,</span>
-<span class="w">  </span><span class="nx">roomIndex</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span>
-<span class="w">  </span><span class="nx">asset</span><span class="o">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">roomId</span><span class="o">:</span><span class="w"> </span><span class="s1">'b-a-f6-r2'</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">selectedAssetId</span><span class="o">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
 <span class="p">};</span>
 </code></pre>
           </div>
@@ -4791,19 +4801,19 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
               <tbody>
                 <tr>
                   <td><code>selectBuilding</code></td>
-                  <td>切换楼栋，设置有效默认楼层，进入 level 2，重置房间索引与资产</td>
+                  <td>切换楼栋，设置有效默认楼层，进入 level 2，重置房间选择并清空设备 ID</td>
                 </tr>
                 <tr>
                   <td><code>selectFloor</code></td>
-                  <td>更新 floor，进入 level 3，重置房间索引与资产</td>
+                  <td>更新 floor，进入 level 3，重置房间选择并清空设备 ID</td>
                 </tr>
                 <tr>
                   <td><code>selectRoom</code></td>
-                  <td>更新 roomIndex，进入 level 4，清空资产</td>
+                  <td>更新 roomId，进入 level 4，清空资产</td>
                 </tr>
                 <tr>
                   <td><code>selectAsset</code></td>
-                  <td>保持空间层级，仅更新资产弹窗对象</td>
+                  <td>保持空间层级，仅更新 selectedAssetId，再从快照解析弹窗设备</td>
                 </tr>
                 <tr>
                   <td><code>navigate</code></td>
@@ -4839,18 +4849,14 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             <li>
               reducer 将 <code>floor</code> 更新为 8、<code>level</code> 更新为 3，并清除旧资产。
             </li>
+            <li><code>resolveContext</code> 根据楼栋、层号和 roomId 从当前仓库快照解析房间。</li>
             <li>
-              <code>useMemo</code> 因楼层依赖变化调用
-              <code>repository.getRooms(buildingId, 8)</code>。
-            </li>
-            <li>
-              当前房间变为新房间数组的默认索引，资产再由
-              <code>repository.getAssets(room)</code> 派生。
+              当前房间通过 roomId 解析，失效时回退当前层第一个房间，设备列表从同一快照按 roomId
+              筛选。
             </li>
             <li>
               <code>Floors</code> 让
-              <code>index === 8</code>
-              的分组成为选中楼层；对应室内模型和面板数据一起更新。
+              <code>index === 8</code> 的分组成为选中楼层；对应室内模型和面板数据一起更新。
             </li>
           </ol>
           <div class="code-card">
@@ -4863,12 +4869,13 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                 复制代码
               </button>
             </div>
-            <pre><code><span class="kd">const</span><span class="w"> </span><span class="nx">rooms</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useMemo</span><span class="p">(</span>
-<span class="w">  </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">repository</span><span class="p">.</span><span class="nx">getRooms</span><span class="p">(</span><span class="nx">selection</span><span class="p">.</span><span class="nx">buildingId</span><span class="p">,</span><span class="w"> </span><span class="nx">selection</span><span class="p">.</span><span class="nx">floor</span><span class="p">),</span>
-<span class="w">  </span><span class="p">[</span><span class="nx">repository</span><span class="p">,</span><span class="w"> </span><span class="nx">selection</span><span class="p">.</span><span class="nx">buildingId</span><span class="p">,</span><span class="w"> </span><span class="nx">selection</span><span class="p">.</span><span class="nx">floor</span><span class="p">],</span>
+            <pre><code><span class="kd">const</span><span class="w"> </span><span class="nx">snapshot</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useSyncExternalStore</span><span class="p">(</span>
+<span class="w">  </span><span class="nx">repository</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">repository</span><span class="p">.</span><span class="nx">getSnapshot</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">repository</span><span class="p">.</span><span class="nx">getSnapshot</span><span class="p">,</span>
 <span class="p">);</span>
-<span class="kd">const</span><span class="w"> </span><span class="nx">room</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">rooms</span><span class="p">[</span><span class="nx">selection</span><span class="p">.</span><span class="nx">roomIndex</span><span class="p">];</span>
-<span class="kd">const</span><span class="w"> </span><span class="nx">assets</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useMemo</span><span class="p">(()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">repository</span><span class="p">.</span><span class="nx">getAssets</span><span class="p">(</span><span class="nx">room</span><span class="p">),</span><span class="w"> </span><span class="p">[</span><span class="nx">repository</span><span class="p">,</span><span class="w"> </span><span class="nx">room</span><span class="p">]);</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">catalog</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useMemo</span><span class="p">(()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">createCatalog</span><span class="p">(</span><span class="nx">snapshot</span><span class="p">),</span><span class="w"> </span><span class="p">[</span><span class="nx">snapshot</span><span class="p">]);</span>
+<span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">selection</span><span class="p">,</span><span class="w"> </span><span class="nx">rooms</span><span class="p">,</span><span class="w"> </span><span class="nx">room</span><span class="p">,</span><span class="w"> </span><span class="nx">assets</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">resolveContext</span><span class="p">(</span><span class="nx">catalog</span><span class="p">,</span><span class="w"> </span><span class="nx">requestedSelection</span><span class="p">);</span>
 </code></pre>
           </div>
           <p>
@@ -4878,7 +4885,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             等。设备 ID 带有所属房间 ID，因此切换楼层不会继续使用上一层的设备编号。
           </p>
           <p>
-            当前仓库为同步模拟仓库。接真实 API
+            当前仓库为可订阅的同步模拟快照仓库。接真实 API
             时，应在应用层增加加载状态和请求竞态保护，防止用户快速从 8F 切到 9F 后，较晚返回的 8F
             请求覆盖 9F。
           </p>
@@ -4992,18 +4999,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
               </button>
             </div>
             <pre><code><span class="nx">useFrame</span><span class="p">((</span><span class="nx">_</span><span class="p">,</span><span class="w"> </span><span class="nx">dt</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="nx">ref</span><span class="p">.</span><span class="nx">current</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">MathUtils</span><span class="p">.</span><span class="nx">damp</span><span class="p">(</span>
-<span class="w">    </span><span class="nx">ref</span><span class="p">.</span><span class="nx">current</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span>
-<span class="w">    </span><span class="nx">target</span><span class="p">,</span>
-<span class="w">    </span><span class="mf">5</span><span class="p">,</span>
-<span class="w">    </span><span class="nx">dt</span><span class="p">,</span>
-<span class="w">  </span><span class="p">);</span>
-<span class="w">  </span><span class="nx">ref</span><span class="p">.</span><span class="nx">current</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">MathUtils</span><span class="p">.</span><span class="nx">damp</span><span class="p">(</span>
-<span class="w">    </span><span class="nx">ref</span><span class="p">.</span><span class="nx">current</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span>
-<span class="w">    </span><span class="nx">targetX</span><span class="p">,</span>
-<span class="w">    </span><span class="mf">5</span><span class="p">,</span>
-<span class="w">    </span><span class="nx">dt</span><span class="p">,</span>
-<span class="w">  </span><span class="p">);</span>
+<span class="w">  </span><span class="nx">ref</span><span class="p">.</span><span class="nx">current</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">MathUtils</span><span class="p">.</span><span class="nx">damp</span><span class="p">(</span><span class="nx">ref</span><span class="p">.</span><span class="nx">current</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span><span class="w"> </span><span class="nx">target</span><span class="p">,</span><span class="w"> </span><span class="mf">5</span><span class="p">,</span><span class="w"> </span><span class="nx">dt</span><span class="p">);</span>
+<span class="w">  </span><span class="nx">ref</span><span class="p">.</span><span class="nx">current</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">MathUtils</span><span class="p">.</span><span class="nx">damp</span><span class="p">(</span><span class="nx">ref</span><span class="p">.</span><span class="nx">current</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span><span class="w"> </span><span class="nx">targetX</span><span class="p">,</span><span class="w"> </span><span class="mf">5</span><span class="p">,</span><span class="w"> </span><span class="nx">dt</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre>
           </div>
@@ -5039,8 +5036,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             <li>楼板始终存在。展开时，非选中层透明度设为 0.065，并停止投射阴影。</li>
             <li>未展开时显示四面幕墙、选中条和楼层按钮；屋顶只在 level 2 显示。</li>
             <li>
-              <code>expanded &amp;&amp; selected</code>
-              时显示室内房间和走廊线，并按
+              <code>expanded &amp;&amp; selected</code> 时显示室内房间和走廊线，并按
               <code>r.floor === index</code> 过滤数据。
             </li>
           </ul>
@@ -5124,8 +5120,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
               <code>z-index: 0</code>，建立独立层叠上下文。
             </li>
             <li>
-              设备标号设定
-              <code>zIndexRange={[10, 1]}</code>，弹窗遮罩在外部使用 <code>z-index: 20</code>。
+              设备标号设定 <code>zIndexRange={[10, 1]}</code>，弹窗遮罩在外部使用
+              <code>z-index: 20</code>。
             </li>
             <li>
               <code>App</code> 将 <code>assetOpen</code> 传给
@@ -5134,8 +5130,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           </ol>
           <p>
             设备标号位于 Scene 内独立的 Html 节点，使用
-            <code>getFloorElevation(floor) + 1.7</code>
-            作为高度；它们没有挂到会移动的 Floor
+            <code>getFloorElevation(floor) + 1.7</code> 作为高度；它们没有挂到会移动的 Floor
             分组中。因此在楼层移动过程中，标号与实体设备可能短暂不同步。若要精确跟随，可把设备标号移入对应
             Room，使用设备局部坐标作为锚点。
           </p>

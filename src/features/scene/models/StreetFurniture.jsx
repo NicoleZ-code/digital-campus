@@ -1,6 +1,16 @@
+/**
+ * @file StreetFurniture.jsx
+ * @description 街道家具模型：长椅、路灯与行人。
+ */
+
 import React from 'react';
 import Box from '../primitives/Box.jsx';
 
+/**
+ * 渲染长椅：4 块坐板、两侧支腿与靠背。
+ * @param {number[]} position - 长椅位置坐标 [x, y(高度), z]
+ * @param {number} [rotation=0] - 绕 Y 轴旋转角度（弧度），Math.PI 表示反向
+ */
 export function Bench({ position, rotation = 0 }) {
   return (
     <group
@@ -32,6 +42,10 @@ export function Bench({ position, rotation = 0 }) {
     </group>
   );
 }
+/**
+ * 渲染路灯：灯杆、灯臂与自发光灯头。
+ * @param {number[]} position - 路灯位置坐标 [x, y(高度), z]
+ */
 export function Lamp({ position }) {
   return (
     <group
@@ -57,6 +71,12 @@ export function Lamp({ position }) {
     </group>
   );
 }
+/**
+ * 渲染行人：球形头部、躯干与双腿双臂。
+ * @param {number[]} position - 行人位置坐标 [x, y(高度), z]
+ * @param {number} [rotation=0] - 朝向（绕 Y 轴弧度）
+ * @param {string} [color='#9abdb5'] - 衣服颜色（躯干与手臂）
+ */
 export function Pedestrian({ position, rotation = 0, color = '#9abdb5' }) {
   return (
     <group

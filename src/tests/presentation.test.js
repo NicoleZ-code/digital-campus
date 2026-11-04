@@ -1,6 +1,19 @@
+/**
+ * @file presentation.test.js
+ * @description 数字园区模块的自动化验证与测试夹具。
+ */
+
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { buildings, roomsFor, assetsFor, contextMetrics } from './fixtures.js';
+import {
+  buildings,
+  city,
+  campus,
+  campuses,
+  roomsFor,
+  assetsFor,
+  contextMetrics,
+} from './fixtures.js';
 import { getCampusView, getAssetDetails } from '../ui/config/presentation.js';
 import { defaultSelection } from '../domain/campus/constants.js';
 
@@ -8,9 +21,13 @@ function context(level, period = '24h') {
   const building = buildings.find((item) => item.id === defaultSelection.buildingId);
   const floor = defaultSelection.floor;
   const rooms = roomsFor(building.id, floor);
-  const room = rooms[defaultSelection.roomIndex];
+  const room = rooms.find((room) => room.id === defaultSelection.roomId);
   return {
     level,
+    city,
+    campus,
+    campuses,
+    buildings,
     period,
     building,
     floor,
@@ -21,9 +38,9 @@ function context(level, period = '24h') {
   };
 }
 
-test('五级展示数据对应当前空间，保留原有导航文案和数量', () => {
+test('五级展示数据对应当前空间，城市层与园区层文案互相区分', () => {
   const expected = [
-    ['连接城市，感知空间', '楼宇索引', 3],
+    ['连接上海，感知空间', '园区索引', 1],
     ['海序数字园区', '楼宇索引', 3],
     ['海序中心', '楼层索引', 12],
     ['A 座 · 6F 空间', '房间索引', 6],
@@ -34,8 +51,11 @@ test('五级展示数据对应当前空间，保留原有导航文案和数量',
     assert.deepEqual([view.title, view.indexTitle, view.count], expected[level]);
     assert.ok(view.primaryLabel);
     assert.ok(view.caption);
-    assert.equal(view.onlineCount + view.warningCount, context(level).metrics.assets);
+    assert.equal(view.onlineCount + view.offlineCount, context(level).metrics.assets);
   }
+  // 城市层与园区层的统计口径标签必须不同
+  assert.equal(getCampusView(context(0)).energyScope, '上海');
+  assert.equal(getCampusView(context(1)).energyScope, '园区');
 });
 
 test('切换曲线周期保留当前空间的能耗与范围', () => {
@@ -54,5 +74,5 @@ test('资产详情使用当前设备字段，编号与所属房间保持一致',
   );
   assert.equal(details['资产编号'], asset.id.toUpperCase());
   assert.equal(details['所属房间'], asset.roomId);
-  assert.equal(details['当前功率'], asset.power);
+  assert.equal(details['当前功率'], `${asset.power} ${asset.powerUnit}`);
 });

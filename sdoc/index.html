@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1"
+    />
+    <meta
+      name="description"
+      content="海序空间项目文档：通过标签切换阅读下钻与楼层展开分析、数据结构与 Zustand 选型分析。"
+    />
+    <meta
+      name="theme-color"
+      content="#081e27"
+    />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg%0A%20%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%0A%20%20viewBox%3D%220%200%2032%2032%22%0A%20%20fill%3D%22none%22%0A%3E%0A%20%20%3C%21--%20Logo%20geometry%3A%20Lucide%20Boxes%2C%20ISC%20license%3B%20see%20favicon-LICENSE.txt.%20--%3E%0A%20%20%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%23061b24%22%20%2F%3E%0A%20%20%3Cg%0A%20%20%20%20transform%3D%22translate%284%204%29%22%0A%20%20%20%20stroke%3D%22%2378edcf%22%0A%20%20%20%20stroke-width%3D%221.3%22%0A%20%20%20%20stroke-linecap%3D%22round%22%0A%20%20%20%20stroke-linejoin%3D%22round%22%0A%20%20%3E%0A%20%20%20%20%3Cpath%0A%20%20%20%20%20%20d%3D%22M2.97%2012.92A2%202%200%200%200%202%2014.63v3.24a2%202%200%200%200%20.97%201.71l3%201.8a2%202%200%200%200%202.06%200L12%2019v-5.5l-5-3-4.03%202.42Z%22%0A%20%20%20%20%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22m7%2016.5-4.74-2.85%22%20%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22m7%2016.5%205-3%22%20%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M7%2016.5v5.17%22%20%2F%3E%0A%20%20%20%20%3Cpath%0A%20%20%20%20%20%20d%3D%22M12%2013.5V19l3.97%202.38a2%202%200%200%200%202.06%200l3-1.8a2%202%200%200%200%20.97-1.71v-3.24a2%202%200%200%200-.97-1.71L17%2010.5l-5%203Z%22%0A%20%20%20%20%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22m17%2016.5-5-3%22%20%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22m17%2016.5%204.74-2.85%22%20%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M17%2016.5v5.17%22%20%2F%3E%0A%20%20%20%20%3Cpath%0A%20%20%20%20%20%20d%3D%22M7.97%204.42A2%202%200%200%200%207%206.13v4.37l5%203%205-3V6.13a2%202%200%200%200-.97-1.71l-3-1.8a2%202%200%200%200-2.06%200l-3%201.8Z%22%0A%20%20%20%20%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M12%208%207.26%205.15%22%20%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22m12%208%204.74-2.85%22%20%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M12%2013.5V8%22%20%2F%3E%0A%20%20%3C%2Fg%3E%0A%3C%2Fsvg%3E%0A"
+    />
+    <title>海序空间 · 项目文档</title>
+    <style>
+      :root {
+        color-scheme: light;
+        font-family:
+          system-ui,
+          -apple-system,
+          'PingFang SC',
+          'Microsoft YaHei',
+          sans-serif;
+        color: #dceceb;
+        background: #f3f6f7;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        height: 100vh;
+        height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+      .document-header {
+        background: #081e27;
+        border-bottom: 1px solid #29444d;
+        padding: 17px 28px 0;
+        flex-shrink: 0;
+      }
+      .header-line {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        margin-bottom: 16px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .brand img {
+        width: 32px;
+        height: 32px;
+      }
+      .brand strong {
+        display: block;
+        font-size: 16px;
+        font-weight: 650;
+        letter-spacing: 1px;
+      }
+      .brand small {
+        display: block;
+        color: #7c9da7;
+        font-size: 9px;
+        letter-spacing: 2px;
+        margin-top: 4px;
+      }
+      .open-document {
+        color: #8edacb;
+        text-decoration: none;
+        font-size: 12px;
+        padding: 8px 12px;
+        border: 1px solid #365861;
+        border-radius: 6px;
+        white-space: nowrap;
+      }
+      .open-document:hover {
+        background: #173942;
+      }
+      .tabs {
+        display: flex;
+        gap: 8px;
+        overflow-x: auto;
+      }
+      .tabs button {
+        font: inherit;
+        cursor: pointer;
+        color: #90aeb7;
+        background: transparent;
+        border: 0;
+        border-bottom: 3px solid transparent;
+        padding: 12px 17px 13px;
+        white-space: nowrap;
+        font-size: 13px;
+        border-radius: 6px 6px 0 0;
+      }
+      .tabs button[aria-selected='true'] {
+        color: #91efd7;
+        border-bottom-color: #78edcf;
+        background: #15353e;
+      }
+      .tabs button:hover {
+        color: #d2f3ec;
+        background: #123039;
+      }
+      :focus-visible {
+        outline: 2px solid #78edcf;
+        outline-offset: -3px;
+      }
+      main {
+        flex: 1;
+        min-height: 0;
+        position: relative;
+      }
+      .document-panel {
+        height: 100%;
+      }
+      [hidden] {
+        display: none !important;
+      }
+      iframe {
+        width: 100%;
+        height: 100%;
+        display: block;
+        border: 0;
+        background: #f3f6f7;
+      }
+      .fallback {
+        color: #17313c;
+        padding: 25px;
+        font-size: 14px;
+      }
+      .fallback a {
+        color: #087f79;
+        margin-right: 20px;
+      }
+      @media (max-width: 600px) {
+        .document-header {
+          padding: 12px 12px 0;
+        }
+        .header-line {
+          margin-bottom: 10px;
+          gap: 10px;
+        }
+        .brand strong {
+          font-size: 14px;
+        }
+        .brand small {
+          font-size: 8px;
+        }
+        .open-document {
+          padding: 7px 9px;
+          font-size: 11px;
+        }
+        .tabs button {
+          padding: 11px 12px;
+          font-size: 12px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="document-header">
+      <div class="header-line">
+        <div class="brand">
+          <img
+            id="document-logo"
+            src="data:image/svg+xml,%3Csvg%0A%20%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%0A%20%20viewBox%3D%220%200%2032%2032%22%0A%20%20fill%3D%22none%22%0A%3E%0A%20%20%3C%21--%20Logo%20geometry%3A%20Lucide%20Boxes%2C%20ISC%20license%3B%20see%20favicon-LICENSE.txt.%20--%3E%0A%20%20%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%23061b24%22%20%2F%3E%0A%20%20%3Cg%0A%20%20%20%20transform%3D%22translate%284%204%29%22%0A%20%20%20%20stroke%3D%22%2378edcf%22%0A%20%20%20%20stroke-width%3D%221.3%22%0A%20%20%20%20stroke-linecap%3D%22round%22%0A%20%20%20%20stroke-linejoin%3D%22round%22%0A%20%20%3E%0A%20%20%20%20%3Cpath%0A%20%20%20%20%20%20d%3D%22M2.97%2012.92A2%202%200%200%200%202%2014.63v3.24a2%202%200%200%200%20.97%201.71l3%201.8a2%202%200%200%200%202.06%200L12%2019v-5.5l-5-3-4.03%202.42Z%22%0A%20%20%20%20%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22m7%2016.5-4.74-2.85%22%20%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22m7%2016.5%205-3%22%20%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M7%2016.5v5.17%22%20%2F%3E%0A%20%20%20%20%3Cpath%0A%20%20%20%20%20%20d%3D%22M12%2013.5V19l3.97%202.38a2%202%200%200%200%202.06%200l3-1.8a2%202%200%200%200%20.97-1.71v-3.24a2%202%200%200%200-.97-1.71L17%2010.5l-5%203Z%22%0A%20%20%20%20%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22m17%2016.5-5-3%22%20%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22m17%2016.5%204.74-2.85%22%20%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M17%2016.5v5.17%22%20%2F%3E%0A%20%20%20%20%3Cpath%0A%20%20%20%20%20%20d%3D%22M7.97%204.42A2%202%200%200%200%207%206.13v4.37l5%203%205-3V6.13a2%202%200%200%200-.97-1.71l-3-1.8a2%202%200%200%200-2.06%200l-3%201.8Z%22%0A%20%20%20%20%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M12%208%207.26%205.15%22%20%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22m12%208%204.74-2.85%22%20%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M12%2013.5V8%22%20%2F%3E%0A%20%20%3C%2Fg%3E%0A%3C%2Fsvg%3E%0A"
+            alt=""
+          />
+          <div><strong>海序空间 · 项目文档</strong><small>HAIXU / ENGINEERING NOTES</small></div>
+        </div>
+        <a
+          class="open-document"
+          id="open-document"
+          href="./下钻与楼层展开技术分析.html"
+          target="_blank"
+          rel="noopener noreferrer"
+          >单独打开 ↗</a
+        >
+      </div>
+      <nav
+        class="tabs"
+        role="tablist"
+        aria-label="项目技术文档"
+      >
+        <button
+          id="tab-analysis"
+          type="button"
+          role="tab"
+          aria-controls="panel-analysis"
+          aria-selected="true"
+          tabindex="0"
+          data-document="analysis"
+        >
+          下钻与楼层展开
+        </button>
+        <button
+          id="tab-data"
+          type="button"
+          role="tab"
+          aria-controls="panel-data"
+          aria-selected="false"
+          tabindex="-1"
+          data-document="data"
+        >
+          数据结构与 Zustand
+        </button>
+      </nav>
+    </header>
+    <main>
+      <section
+        id="panel-analysis"
+        class="document-panel"
+        role="tabpanel"
+        aria-labelledby="tab-analysis"
+      >
+        <iframe
+          title="下钻与楼层展开技术分析"
+          data-src="./下钻与楼层展开技术分析.html"
+        ></iframe>
+      </section>
+      <section
+        id="panel-data"
+        class="document-panel"
+        role="tabpanel"
+        aria-labelledby="tab-data"
+        hidden
+      >
+        <iframe
+          title="数据结构与 Zustand 选型分析"
+          data-src="./数据结构与Zustand选型分析.html"
+        ></iframe>
+      </section>
+      <noscript
+        ><div class="fallback">
+          请直接打开：<a href="./下钻与楼层展开技术分析.html">下钻与楼层展开</a
+          ><a href="./数据结构与Zustand选型分析.html">数据结构与 Zustand</a>
+        </div></noscript
+      >
+    </main>
+    <script>
+      const tabs = Array.from(document.querySelectorAll('[role="tab"]'));
+      const standaloneLink = document.querySelector('#open-document');
+      function activateDocument(key) {
+        const selected = tabs.find((tab) => tab.dataset.document === key) || tabs[0];
+        tabs.forEach((tab) => {
+          const active = tab === selected;
+          tab.setAttribute('aria-selected', String(active));
+          tab.tabIndex = active ? 0 : -1;
+          const panel = document.getElementById(tab.getAttribute('aria-controls'));
+          panel.hidden = !active;
+          if (active) {
+            const frame = panel.querySelector('iframe');
+            // 首次激活才加载，切换时保留已加载页面的滚动位置和主题选择。
+            if (!frame.hasAttribute('src')) frame.setAttribute('src', frame.dataset.src);
+            standaloneLink.href = frame.dataset.src;
+            standaloneLink.setAttribute('aria-label', '单独打开：' + frame.title);
+            document.title = tab.textContent + ' · 海序空间项目文档';
+          }
+        });
+      }
+      function navigateToTab(tab) {
+        const key = tab.dataset.document;
+        activateDocument(key);
+        if (location.hash !== '#' + key) location.hash = key;
+      }
+      tabs.forEach((tab, index) => {
+        tab.addEventListener('click', () => navigateToTab(tab));
+        tab.addEventListener('keydown', (event) => {
+          let target;
+          if (event.key === 'ArrowRight') target = tabs[(index + 1) % tabs.length];
+          if (event.key === 'ArrowLeft') target = tabs[(index - 1 + tabs.length) % tabs.length];
+          if (event.key === 'Home') target = tabs[0];
+          if (event.key === 'End') target = tabs[tabs.length - 1];
+          if (!target) return;
+          event.preventDefault();
+          target.focus();
+          navigateToTab(target);
+        });
+      });
+      addEventListener('hashchange', () => activateDocument(location.hash.slice(1)));
+      activateDocument(location.hash.slice(1));
+    </script>
+  </body>
+</html>

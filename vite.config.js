@@ -20,7 +20,11 @@ export default defineConfig({
     rollupOptions: {
       input: {
         app: fileURLToPath(new URL('./index.html', import.meta.url)),
+        documents: fileURLToPath(new URL('./sdoc/index.html', import.meta.url)),
         analysis: fileURLToPath(new URL('./sdoc/下钻与楼层展开技术分析.html', import.meta.url)),
+        dataStructure: fileURLToPath(
+          new URL('./sdoc/数据结构与Zustand选型分析.html', import.meta.url),
+        ),
       },
     },
   },

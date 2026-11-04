@@ -155,3 +155,20 @@ main {
   outline: 2px solid var(--mint);
   outline-offset: 4px;
 }
+
+.documentation-links {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+@media (max-width: 480px) {
+  .documentation-links {
+    gap: 5px;
+  }
+  .documentation-links .analysis-link {
+    padding: 7px;
+    gap: 4px;
+    font-size: 10px;
+  }
+}

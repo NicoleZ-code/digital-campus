@@ -1,3 +1,8 @@
+/**
+ * @file modelExport.test.js
+ * @description 数字园区模块的自动化验证与测试夹具。
+ */
+
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { Group, Mesh, BoxGeometry, MeshStandardMaterial } from 'three';

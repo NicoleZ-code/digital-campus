@@ -1,3 +1,8 @@
+/**
+ * @file sceneConfig.test.js
+ * @description 数字园区模块的自动化验证与测试夹具。
+ */
+
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { getFloorPosition } from '../features/scene/config/layout.js';
@@ -39,7 +44,10 @@ test('上海坐标投影保持方向，园区位置位于地图范围内', async
   const { MAP_CENTER, projectShanghai, parkCoordinate } =
     await import('../features/scene/config/geography.js');
   const data = JSON.parse(
-    await readFile(new URL('../features/scene/data/shanghai.json', import.meta.url), 'utf8'),
+    await readFile(
+      new URL('../infrastructure/data/geo/shanghai-districts.json', import.meta.url),
+      'utf8',
+    ),
   );
   assert.equal(data.features.length, 16);
   assert.equal(new Set(data.features.map((feature) => feature.properties.adcode)).size, 16);

@@ -1,7 +1,17 @@
+/**
+ * @file Furniture.jsx
+ * @description 室内家具模型：办公椅、桌台与绿植。
+ */
+
 import React from 'react';
 import { RoundedBox } from '@react-three/drei';
 import Box from '../primitives/Box.jsx';
 
+/**
+ * 渲染办公椅：坐垫、椅背、气杆与五爪底座。
+ * @param {number[]} [position=[0,0,0]] - 椅子位置坐标 [x, y(高度), z]
+ * @param {number} [rotation=0] - 绕 Y 轴旋转角度（弧度）
+ */
 export function Chair({ position = [0, 0, 0], rotation = 0 }) {
   return (
     <group
@@ -44,6 +54,10 @@ export function Chair({ position = [0, 0, 0], rotation = 0 }) {
     </group>
   );
 }
+/**
+ * 渲染显示器：屏幕、屏面、支杆与底座。
+ * @param {number[]} [position=[0,0,0]] - 显示器位置坐标 [x, y(高度), z]
+ */
 export function Monitor({ position = [0, 0, 0] }) {
   return (
     <group
@@ -74,6 +88,11 @@ export function Monitor({ position = [0, 0, 0] }) {
     </group>
   );
 }
+/**
+ * 渲染办公桌工位：桌板、侧桌腿、显示器与办公椅。
+ * @param {number[]} [position=[0,0,0]] - 工位位置坐标 [x, y(高度), z]
+ * @param {number} [rotation=0] - 绕 Y 轴旋转角度（弧度）
+ */
 export function Desk({ position = [0, 0, 0], rotation = 0 }) {
   return (
     <group
@@ -104,6 +123,10 @@ export function Desk({ position = [0, 0, 0], rotation = 0 }) {
     </group>
   );
 }
+/**
+ * 渲染室内绿植：花盆与三片错落摆放的球形叶片。
+ * @param {number[]} [position=[0,0,0]] - 绿植位置坐标 [x, y(高度), z]
+ */
 export function Plant({ position = [0, 0, 0] }) {
   return (
     <group
@@ -132,6 +155,10 @@ export function Plant({ position = [0, 0, 0] }) {
     </group>
   );
 }
+/**
+ * 渲染服务器机柜：柜体、前门与 9 层服务器指示灯。
+ * @param {number[]} position - 机柜位置坐标 [x, y(高度), z]（必传）
+ */
 export function ServerRack({ position }) {
   return (
     <group
@@ -166,8 +193,14 @@ export function ServerRack({ position }) {
     </group>
   );
 }
+/**
+ * 按房间类型（kind）渲染对应的室内家具组合。
+ * @param {string} kind - 房间名称/类型：'设备机房'（6 台机柜）、'智能会议室'（会议桌+8 椅）、
+ *   '协作空间'（卡座+洽谈桌），其余（如办公室）渲染 6 组工位桌椅
+ */
 export default function Furniture({ kind }) {
-  if (kind === '设备机房')
+  // 设备机房：3 列 × 2 排共 6 台服务器机柜
+  if (kind === '设备机房') {
     return (
       <>
         {[-0.9, 0, 0.9].flatMap((x) =>
@@ -180,7 +213,9 @@ export default function Furniture({ kind }) {
         )}
       </>
     );
-  if (kind === '智能会议室')
+  }
+  // 智能会议室：长桌、两侧支撑、两侧各 4 把椅子与桌面会议屏
+  if (kind === '智能会议室') {
     return (
       <>
         <RoundedBox
@@ -219,7 +254,9 @@ export default function Furniture({ kind }) {
         />
       </>
     );
-  if (kind === '协作空间')
+  }
+  // 协作空间：卡座沙发、靠背与洽谈桌
+  if (kind === '协作空间') {
     return (
       <>
         <Box
@@ -243,6 +280,8 @@ export default function Furniture({ kind }) {
         />
       </>
     );
+  }
+  // 默认（开放办公室）：3 列 × 2 排共 6 组工位
   return (
     <>
       {[-1.05, 0, 1.05].flatMap((x) =>

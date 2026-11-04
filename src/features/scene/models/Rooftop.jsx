@@ -1,8 +1,19 @@
+/**
+ * @file Rooftop.jsx
+ * @description 屋顶模型：渲染屋顶设备与百叶格栅细节。
+ */
+
 import React, { useMemo } from 'react';
 import Box from '../primitives/Box.jsx';
 import BatchBoxes from '../primitives/BatchBoxes.jsx';
 
+/**
+ * 屋顶模型：渲染屋顶平台、女儿墙、设备间、百叶格栅、冷却塔与天线。
+ * @param {number} width - 屋顶宽度（x 横向）
+ * @param {number} depth - 屋顶深度（z 纵深）
+ */
 export default function Rooftop({ width, depth }) {
+  // 16 片沿 x 轴均匀排列的百叶格栅，随宽/深变化重新计算。
   const louvers = useMemo(
     () =>
       Array.from({ length: 16 }, (_, i) => ({
@@ -14,11 +25,13 @@ export default function Rooftop({ width, depth }) {
   );
   return (
     <group name="roof-equipment">
+      {/* 屋顶平台 */}
       <Box
         position={[0, 0.03, 0]}
         size={[width + 0.2, 0.16, depth + 0.2]}
         color="#c0d0d0"
       />
+      {/* 四周女儿墙：±z 两条长边与 ±x 两条短边 */}
       {[-1, 1].map((side) => (
         <React.Fragment key={side}>
           <Box
@@ -33,12 +46,15 @@ export default function Rooftop({ width, depth }) {
           />
         </React.Fragment>
       ))}
+      {/* 屋顶设备间基座 */}
       <Box
         position={[0, 0.2, 0]}
         size={[width * 0.55, 0.28, depth * 0.55]}
         color="#19323d"
       />
+      {/* 设备间百叶格栅（批量渲染） */}
       <BatchBoxes items={louvers} />
+      {/* 两侧冷却塔：塔体、顶面风扇盘与防护环 */}
       {[-0.22, 0.22].map((x) => (
         <group
           key={x}
@@ -64,6 +80,7 @@ export default function Rooftop({ width, depth }) {
           </mesh>
         </group>
       ))}
+      {/* 屋顶天线立杆 */}
       <Box
         position={[width * 0.35, 0.55, -depth * 0.3]}
         size={[0.04, 1.1, 0.04]}

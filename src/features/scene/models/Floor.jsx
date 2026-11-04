@@ -1,3 +1,8 @@
+/**
+ * @file Floor.jsx
+ * @description 单层楼层模型：渲染楼板、房间与立面，支持选中与展开动画。
+ */
+
 import React, { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Html, Line } from '@react-three/drei';
@@ -6,6 +11,20 @@ import Box from '../primitives/Box.jsx';
 import Room from './Room.jsx';
 import FacadeBand from './FacadeBand.jsx';
 import { getFloorPosition } from '../config/layout.js';
+
+/**
+ * 单层楼层模型：渲染楼板、幕墙、房间与标签，选中/展开时有平滑位移动画。
+ * @param {number} index - 楼层号（从 1 开始）
+ * @param {boolean} selected - 是否为当前选中楼层（高亮并展示房间）
+ * @param {boolean} expanded - 楼层是否处于炸开展开状态（level >= 3）
+ * @param {function} onFloor - 楼层被点选时的回调，参数为楼层号
+ * @param {function} onRoom - 房间被点选时的回调，参数为房间数据对象
+ * @param {object|null} room - 当前选中的房间数据对象
+ * @param {Array<object>} rooms - 该建筑全部房间数据数组（按 floor 字段过滤本层）
+ * @param {boolean} labels - 是否显示楼层/房间 HTML 标签
+ * @param {object} building - 所属建筑数据对象（含 id、code）
+ * @param {string} layer - 当前图层模式，如 'energy' 能耗图层
+ */
 export default function Floor({
   index,
   selected,
@@ -19,6 +38,7 @@ export default function Floor({
   layer,
 }) {
   const ref = useRef();
+  // 楼层动画目标位置：target 为 y 高度，targetX 为 x 横向偏移（展开/选中时位移）。
   const { x: targetX, y: target } = getFloorPosition(index, expanded, selected);
   // 楼层展开后，仅选中的楼层保持可交互。
   useFrame((_, dt) => {
@@ -37,6 +57,7 @@ export default function Floor({
         }
       }}
     >
+      {/* 楼板：展开且非选中时近乎透明以突出选中层 */}
       <Box
         position={[0, 0, 0]}
         size={[12.5, 0.16, 7.8]}
@@ -45,6 +66,7 @@ export default function Floor({
         castShadow={!expanded || selected}
         edge
       />
+      {/* 未展开时：渲染幕墙、选中高亮层与楼层标签 */}
       {!expanded && (
         <>
           <FacadeBand
@@ -78,6 +100,7 @@ export default function Floor({
           )}
         </>
       )}
+      {/* 展开且选中时：渲染房间、楼层大标签与中轴线 */}
       {expanded && selected && (
         <>
           {labels && (
