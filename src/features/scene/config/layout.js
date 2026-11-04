@@ -1,7 +1,14 @@
-export function getFloorPosition(index, totalFloors, expanded, selected) {
+import { FLOOR_HEIGHT } from './architecture.js';
+
+export function getFloorElevation(floor) {
+  return floor * FLOOR_HEIGHT;
+}
+
+export function getFloorPosition(index, expanded, selected) {
   return {
     x: expanded && !selected ? -17 : 0,
-    y: expanded ? (selected ? 2 : index * 0.95 + (index > totalFloors / 2 ? 2 : 0)) : index * 0.8,
+    // 抽离只改变横向位置，保留楼层在建筑中的标高。
+    y: getFloorElevation(index),
   };
 }
 

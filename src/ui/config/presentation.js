@@ -1,5 +1,5 @@
 export const campusLocation = {
-  name: '上海 · 浦东新区',
+  name: '上海 · 示意园区',
   coordinates: '31.2304° N / 121.4737° E · 示意位置',
 };
 

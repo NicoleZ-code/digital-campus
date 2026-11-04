@@ -40,6 +40,7 @@ export default function App({ repository }) {
                 rooms={data.rooms}
                 room={room}
                 assets={data.assets}
+                assetOpen={Boolean(asset)}
                 onBuilding={navigation.selectBuilding}
                 onFloor={navigation.selectFloor}
                 onRoom={navigation.selectRoom}

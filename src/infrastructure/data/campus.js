@@ -1,3 +1,6 @@
+import { getRoomPosition } from './roomLayouts.js';
+
+// 生成随机建筑数据，便于演示建筑列表和建筑地图。
 export const buildings = [
   {
     id: 'b-a',
@@ -39,6 +42,8 @@ export const buildings = [
     assets: 144,
   },
 ];
+
+// 生成随机房间数据，便于演示房间列表和房间地图。
 export const createMockRooms = (buildingId, floor) =>
   ['开放办公区', '智能会议室', '设备机房', '协作空间', '培训室', '值班室'].map((name, i) => ({
     id: `${buildingId}-f${floor}-r${i + 1}`,
@@ -48,17 +53,12 @@ export const createMockRooms = (buildingId, floor) =>
     name,
     number: `${floor}0${i + 1}`,
     area: [168, 56, 42, 86, 96, 64][i],
-    position: [
-      [-4.1, -1.7],
-      [4.1, -1.7],
-      [0, 1.7],
-      [-4.1, 1.7],
-      [0, -1.7],
-      [4.1, 1.7],
-    ][i],
+    position: getRoomPosition(buildingId, floor, i),
     energy: [128, 36, 242, 64, 78, 44][i] + floor * 3,
     warning: i === 1 && floor === 6 && buildingId === 'b-a',
   }));
+
+// 生成随机资产数据，便于演示资产列表和资产地图。
 export const createMockAssets = (room) => [
   {
     id: `${room.id}-a1`,
@@ -91,6 +91,8 @@ export const createMockAssets = (room) => [
     power: '0.18 kW',
   },
 ];
+
+// 生成随机告警数据，便于演示告警列表和告警地图。
 export const alerts = [
   {
     id: 'alert-1',

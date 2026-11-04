@@ -3,11 +3,11 @@ import { useFrame } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import { Vector3 } from 'three';
 import { getCameraPreset } from '../config/camera.js';
-export default function CameraRig({ level, room, revision, autoRotate }) {
+export default function CameraRig({ level, floor, room, revision, autoRotate }) {
   const controls = useRef();
   const { position, target } = useMemo(
-    () => getCameraPreset(level, room.position),
-    [level, room.position],
+    () => getCameraPreset(level, room.position, floor),
+    [level, room.position, floor],
   );
   const animating = useRef(true);
   useEffect(() => {

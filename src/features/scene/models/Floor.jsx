@@ -19,7 +19,7 @@ export default function Floor({
   layer,
 }) {
   const ref = useRef();
-  const { x: targetX, y: target } = getFloorPosition(index, building.floors, expanded, selected);
+  const { x: targetX, y: target } = getFloorPosition(index, expanded, selected);
   // 楼层展开后，仅选中的楼层保持可交互。
   useFrame((_, dt) => {
     ref.current.position.y = MathUtils.damp(ref.current.position.y, target, 5, dt);
@@ -31,7 +31,7 @@ export default function Floor({
       name={`${building.id}-f${index}`}
       userData={{ buildingId: building.id, floorId: `${building.id}-f${index}` }}
       onClick={(e) => {
-        if (!expanded) {
+        if (!expanded || !selected) {
           e.stopPropagation();
           onFloor(index);
         }
@@ -67,7 +67,10 @@ export default function Floor({
             >
               <button
                 className={`floor-label ${selected ? 'active' : ''}`}
-                onClick={() => onFloor(index)}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  onFloor(index);
+                }}
               >
                 {String(index).padStart(2, '0')}F
               </button>
@@ -77,16 +80,29 @@ export default function Floor({
       )}
       {expanded && selected && (
         <>
-          {rooms.map((r) => (
-            <Room
-              key={r.id}
-              data={r}
-              selected={room?.id === r.id}
-              layer={layer}
-              labels={labels}
-              onSelect={onRoom}
-            />
-          ))}
+          {labels && (
+            <Html
+              position={[-6, 1, 4]}
+              center
+              zIndexRange={[10, 1]}
+            >
+              <span className="floor-label active">
+                {building.code} 座 · {index}F
+              </span>
+            </Html>
+          )}
+          {rooms
+            .filter((r) => r.floor === index)
+            .map((r) => (
+              <Room
+                key={r.id}
+                data={r}
+                selected={room?.id === r.id}
+                layer={layer}
+                labels={labels}
+                onSelect={onRoom}
+              />
+            ))}
           <Line
             points={[
               [-6.1, 0.2, 0],

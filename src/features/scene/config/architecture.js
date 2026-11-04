@@ -29,6 +29,11 @@ export function createFacade(width, depth, height, seed = 0) {
           palette[(i * 3 + seed + 1) % palette.length],
         );
     }
+    for (const ratio of [0.34, 0.68]) {
+      const y = height * ratio;
+      add(frames, [0, y, face * (depth / 2 + 0.025)], [width, 0.026, 0.055], '#9bbec2');
+      add(frames, [face * (width / 2 + 0.025), y, 0], [0.055, 0.026, depth], '#9bbec2');
+    }
   }
   add(frames, [0, height, 0], [width + 0.08, 0.055, depth + 0.08], '#afc9cc');
   return { frames, panes };

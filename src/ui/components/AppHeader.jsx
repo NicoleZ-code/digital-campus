@@ -1,5 +1,5 @@
 import React from 'react';
-import { Boxes, ChevronRight, Map, Maximize } from 'lucide-react';
+import { Boxes, ChevronRight, Map, Maximize, CodeXml } from 'lucide-react';
 import useClock from '../hooks/useClock.js';
 
 export default function AppHeader({
@@ -47,6 +47,17 @@ export default function AppHeader({
         )}
       </nav>
       <div className="header-right">
+        {level === 1 && (
+          <a
+            className="analysis-link"
+            href={`${import.meta.env.BASE_URL}sdoc/下钻与楼层展开技术分析.html`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <CodeXml size={16} />
+            分析代码
+          </a>
+        )}
         <span className="live">
           <i />
           模拟数据

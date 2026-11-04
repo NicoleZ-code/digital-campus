@@ -1,4 +1,5 @@
 import React from 'react';
+import { getFloorElevation } from '../config/layout.js';
 import Floor from './Floor.jsx';
 import Rooftop from './Rooftop.jsx';
 export default function Floors({
@@ -15,7 +16,7 @@ export default function Floors({
   return (
     <group>
       {level === 2 && (
-        <group position={[0, (building.floors + 1) * 0.8, 0]}>
+        <group position={[0, getFloorElevation(building.floors + 1), 0]}>
           <Rooftop
             width={12.4}
             depth={7.7}

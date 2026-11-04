@@ -52,3 +52,21 @@ test('告警能够定位唯一房间和对应异常传感器', () => {
   }
   assert.equal(assetsFor(roomsFor('b-b', 6)[1]).filter((d) => d.status === '告警').length, 0);
 });
+
+test('切换楼层后平面布局和设备归属随当前楼层更新', () => {
+  for (const building of buildings) {
+    let previousPositions;
+    for (let floor = 1; floor <= building.floors; floor++) {
+      const rooms = roomsFor(building.id, floor);
+      const positions = rooms.map((room) => room.position);
+      assert.equal(new Set(positions.map((position) => position.join(','))).size, rooms.length);
+      if (previousPositions) assert.notDeepEqual(positions, previousPositions);
+      for (const room of rooms) {
+        assert.equal(room.floor, floor);
+        assert.ok(room.number.startsWith(`${floor}0`));
+        for (const asset of assetsFor(room)) assert.equal(asset.roomId, room.id);
+      }
+      previousPositions = positions;
+    }
+  }
+});

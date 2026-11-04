@@ -8,6 +8,7 @@ import Building from './models/Building.jsx';
 import Floors from './models/Floors.jsx';
 import City from './models/City.jsx';
 import ModelExport from './effects/ModelExport.jsx';
+import { getFloorElevation } from './config/layout.js';
 import CameraRig from './controls/CameraRig.jsx';
 import { canvasCamera } from './config/camera.js';
 import SceneEnvironment from './effects/SceneEnvironment.jsx';
@@ -95,12 +96,14 @@ export default function Scene(props) {
         onComplete={props.onExportComplete}
       />
       {level === 4 &&
+        !props.assetOpen &&
         assets.map((a, i) => (
           <Html
+            zIndexRange={[10, 1]}
             key={a.id}
             position={[
               room.position[0] + [-1.1, 1.25, 1.77][i],
-              3.7,
+              getFloorElevation(floor) + 1.7,
               room.position[1] + [-1.4, -1.34, 0.85][i],
             ]}
             center
@@ -116,6 +119,7 @@ export default function Scene(props) {
         ))}
       <CameraRig
         level={level}
+        floor={floor}
         room={room}
         revision={revision}
         autoRotate={autoRotate}

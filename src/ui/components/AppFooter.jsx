@@ -6,7 +6,7 @@ export default function AppFooter({ level }) {
       <span>
         空间资产 <b>/ 0{level + 1} / 05</b>
       </span>
-      <span>所有楼宇与资产均为程序化演示模型 · 上海地图为示意</span>
+      <span>程序化演示模型 · 上海区界源自 DataV</span>
       <span>
         <i /> SYSTEM ONLINE <b>HAIXU © 2026</b>
       </span>
